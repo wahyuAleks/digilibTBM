@@ -1,90 +1,92 @@
-# Update Thumbnail Buku Fiksi - Dokumentasi
+# Update Thumbnail Buku
 
-## Yang Telah Dilakukan
+Dokumentasi untuk update thumbnail/cover buku di database.
 
-### 1. ✅ Menambahkan Kolom Thumbnail ke Database
-- Kolom `thumbnail` (VARCHAR 255) ditambahkan ke tabel `buku`
-- Kolom ini untuk menyimpan nama file gambar cover buku
+## Thumbnail untuk Kategori Fiksi
 
-### 2. ✅ Upload & Copy Gambar
-- Gambar "Aroma Karsa" yang Anda upload disimpan sebagai: 
-  - `web/images/fiksi-cover.jpg`
+Script `update_fiksi_thumbnail.php` dipakai untuk set thumbnail semua buku kategori Fiksi.
 
-### 3. ✅ Update Database
-- **19 buku kategori Fiksi** berhasil diupdate dengan thumbnail: `fiksi-cover.jpg`
-- Daftar buku yang diupdate:
-  1. asdfa
-  2. Laskar Pelangi
-  3. Bumi Manusia
-  4. Negeri 5 Menara
-  5. Pulang
-  6. Hujan
-  7. Sang Pemimpi
-  8. Ayat-Ayat Cinta
-  9. Rantau 1 Muara
-  10. Fiksi: Petualangan di Pulau A1
-  11. Fiksi: Kisah Malam Hari A2
-  12. Fiksi: Misteri Kota A3
-  13. Fiksi: Cahaya di Ujung Jalan A4
-  14. Fiksi: Rahasia Kamar Lama A5
-  15. Fiksi: Langit dan Laut A6
-  16. Fiksi: Jejak Sang Penulis A7
-  17. Fiksi: Senja di Desa A8
-  18. Fiksi: Sang Penjelajah A9
-  19. Fiksi: Malam Tanpa Bintang A10
+### Cara Pakai
 
-### 4. ✅ Update Model & View
-- **Model Buku**: Ditambahkan property `thumbnail` dan validation
-- **View catalog**: Diupdate untuk prioritaskan thumbnail dari database
-
-## Cara Kerja Tampilan Cover Buku
-
-Sekarang sistem akan mencari cover buku dengan urutan prioritas:
-
-1. **Thumbnail dari database** (kolom `thumbnail`)
-   - Jika ada, gunakan gambar dari `web/images/{nama_file}`
-   
-2. **Gambar berdasarkan kategori** (fallback)
-   - Mencari file di `web/images/` dengan pattern: `{kategori}-cover*`
-   - Contoh: `fiksi-cover.jpg`, `teknologi-cover.svg`
-   
-3. **Unsplash API** (fallback terakhir)
-   - Jika tidak ada gambar lokal, gunakan random image dari Unsplash
-
-## Cara Menambahkan Thumbnail untuk Kategori Lain
-
-### Manual via SQL:
-```sql
--- Update buku Non-Fiksi
-UPDATE buku SET thumbnail = 'nonfiksi-cover.jpg' WHERE kategoriID = 2;
-
--- Update buku Pendidikan  
-UPDATE buku SET thumbnail = 'pendidikan-cover.jpg' WHERE kategoriID = 3;
-
--- Update buku Teknologi
-UPDATE buku SET thumbnail = 'teknologi-cover.svg' WHERE kategoriID = 4;
-```
-
-### Via Script PHP:
 ```bash
-# Buat script serupa untuk kategori lain
-php update_nonfiksi_thumbnail.php
-php update_pendidikan_thumbnail.php
+php update_fiksi_thumbnail.php
 ```
 
-### Update Per Buku (di CRUD Admin):
-Nanti di form edit buku, admin bisa upload gambar thumbnail sendiri untuk setiap buku.
+Script akan:
+1. Cari semua buku dengan kategori "Fiksi"
+2. Update kolom `thumbnail` dengan path gambar default
+3. Pakai gambar: `/images/fiksi-cover.jpg`
 
-## Files yang Dimodifikasi
+### Edit Thumbnail Path
 
-1. ✅ `models/Buku.php` - Tambah property thumbnail
-2. ✅ `views/site/index.php` - Update logik tampilan cover
-3. ✅ `SQL_UNTUK_PHPMYADMIN.sql` - Tambah kolom thumbnail
-4. ✅ `web/images/fiksi-cover.jpg` - Gambar cover baru
-5. ✅ `update_fiksi_thumbnail.php` - Script update (bisa dihapus atau disimpan)
+Buka file `update_fiksi_thumbnail.php`, cari baris ini:
 
-## Hasil
+```php
+$thumbnailPath = '/images/fiksi-cover.jpg';
+```
 
-Sekarang semua buku **kategori Fiksi** akan menampilkan cover "Aroma Karsa" yang Anda upload! 🎉
+Ganti dengan path gambar yang mau dipake.
 
-![Gambar Cover Fiksi](web/images/fiksi-cover.jpg)
+## Upload Thumbnail Baru
+
+Kalau mau pakai gambar baru:
+
+1. Simpan gambar di folder `web/images/`
+2. Misal: `web/images/my-book-cover.jpg`
+3. Update script atau database manual
+
+### Update Manual via phpMyAdmin
+
+```sql
+UPDATE buku 
+SET thumbnail = '/images/my-book-cover.jpg' 
+WHERE kategoriID = 1;
+```
+
+Ganti `kategoriID` sesuai kategori:
+- 1 = Fiksi
+- 2 = Non-Fiksi
+- 3 = Pendidikan
+- 4 = Teknologi
+
+## Thumbnail untuk Kategori Lain
+
+Bisa bikin script serupa untuk kategori lain:
+
+```php
+<?php
+require(__DIR__ . '/vendor/autoload.php');
+
+$app = require(__DIR__ . '/config/web.php');
+(new yii\web\Application($app));
+
+// Update untuk Non-Fiksi
+$buku = \app\models\Buku::find()
+    ->where(['kategoriID' => 2])  // 2 = Non-Fiksi
+    ->all();
+
+foreach ($buku as $b) {
+    $b->thumbnail = '/images/nonfiksi-cover.jpg';
+    $b->save(false);
+}
+
+echo "Done!";
+```
+
+## Format Gambar
+
+- Format: JPG, PNG, GIF
+- Ukuran recommended: 300x400px atau 600x800px
+- Simpan di `web/images/`
+- Path relatif dari `web/` folder
+
+## Troubleshooting
+
+**Gambar tidak muncul**
+- Cek path benar (relatif dari `/web`)
+- Cek file exists di folder images
+- Cek permission folder
+
+**Error saat run script**
+- Pastikan composer install sudah jalan
+- Cek database connection di config

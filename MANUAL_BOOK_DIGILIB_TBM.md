@@ -1,60 +1,55 @@
-# 📚 Manual Book - Sistem digilibTBM (Digital Library TBM)
+# Manual Book - Sistem digilibTBM
 
-> **Versi**: 1.0  
-> **Tanggal**: Januari 2026  
-> **Framework**: Yii2 PHP Framework
+**Versi**: 1.0  
+**Framework**: Yii2 PHP Framework
 
 ---
 
-## 📋 Daftar Isi
+## Daftar Isi
 
 1. [Pendahuluan](#pendahuluan)
 2. [Instalasi & Setup](#instalasi--setup)
-3. [Fitur-Fitur Sistem](#fitur-fitur-sistem)
-4. [Panduan Pengguna Admin](#panduan-pengguna-admin)
-5. [Panduan Pengguna Member/Anggota](#panduan-pengguna-memberanggota)
-6. [Troubleshooting](#troubleshooting)
-7. [FAQ](#faq)
+3. [Panduan Admin](#panduan-admin)
+4. [Panduan Anggota](#panduan-anggota)
+5. [Troubleshooting](#troubleshooting)
 
 ---
 
-## 📖 Pendahuluan
+## Pendahuluan
 
 ### Tentang digilibTBM
 
-**digilibTBM** (Digital Library Taman Bacaan Masyarakat) adalah sebuah sistem manajemen perpustakaan digital yang dirancang untuk memudahkan pengelolaan koleksi buku, anggota, dan transaksi peminjaman buku secara online.
+digilibTBM adalah sistem manajemen perpustakaan digital untuk Taman Bacaan Masyarakat. Sistem ini memudahkan pengelolaan koleksi buku, anggota, dan transaksi peminjaman.
 
 ### Fitur Utama
 
-- ✅ **Manajemen Buku**: Tambah, edit, hapus, dan cari buku
-- ✅ **Katalog Digital**: Pencarian buku berdasarkan judul, penulis, dan ISBN
-- ✅ **Peminjaman Online**: Anggota dapat meminjam buku secara mandiri
-- ✅ **Pengembalian Mandiri**: Anggota dapat mengembalikan buku secara online
-- ✅ **Sistem Denda**: Perhitungan denda otomatis untuk keterlambatan
-- ✅ **Multi-User**: Sistem role-based access (Admin & Member)
-- ✅ **Dashboard Interaktif**: Visualisasi data dan statistik real-time
+- Manajemen Buku (tambah, edit, hapus, cari)
+- Katalog Digital dengan pencarian
+- Peminjaman Online
+- Pengembalian Mandiri
+- Sistem Denda Otomatis
+- Dashboard untuk Admin dan Member
 
 ### Role Pengguna
 
-| Role | Akses | Fungsi Utama |
-|------|-------|--------------|
-| **Admin** | Penuh | Kelola buku, anggota, peminjaman, kategori, rak |
-| **Member/Anggota** | Terbatas | Browse katalog, pinjam buku, kembalikan buku, lihat riwayat |
+**Admin**: Full access - bisa kelola semua data (buku, anggota, peminjaman, kategori, rak)
+
+**Member/Anggota**: Akses terbatas - browse katalog, pinjam buku, lihat riwayat
 
 ---
 
-## 🛠️ Instalasi & Setup
+## Instalasi & Setup
 
-### Persyaratan Sistem
+### Requirements
 
-- PHP 7.4 atau lebih tinggi
+- PHP 7.4+
 - MySQL/MariaDB
-- Composer (untuk dependency management)
-- Web server (Apache/Nginx) atau PHP Built-in Server
+- Composer
+- Web server atau PHP Built-in Server
 
-### Langkah-Langkah Instalasi
+### Langkah Install
 
-#### 1. Clone/Download Project
+#### 1. Download Project
 
 ```bash
 cd d:\PROJEKTBM\digilibTBM
@@ -68,51 +63,39 @@ composer install
 
 #### 3. Setup Database
 
-**Opsi A: Menggunakan phpMyAdmin**
+**Cara 1: Pakai phpMyAdmin**
 
 1. Buka phpMyAdmin
-2. Buat database baru bernama `db_digilib_tbm`
-3. Import file SQL:
-   - Buka file [`SQL_UNTUK_PHPMYADMIN.sql`](file:///d:/PROJEKTBM/digilibTBM/SQL_UNTUK_PHPMYADMIN.sql)
-   - Copy seluruh isi file
-   - Paste ke tab SQL di phpMyAdmin
-   - Klik "Go" untuk eksekusi
+2. Buat database baru: `db_digilib_tbm`
+3. Import file `SQL_UNTUK_PHPMYADMIN.sql`
 
-**Opsi B: Menggunakan Script Otomatis**
-
-Jalankan file batch yang sudah disediakan:
+**Cara 2: Pakai Script Otomatis**
 
 ```bash
 .\RUN_CREATE_DATABASE.bat
 ```
 
-Script ini akan otomatis membuat database dan tabel-tabel yang diperlukan.
+#### 4. Edit Config Database
 
-> 📌 **Dokumentasi lengkap setup database**: [DATABASE_SETUP.md](file:///d:/PROJEKTBM/digilibTBM/DATABASE_SETUP.md)
-
-#### 4. Konfigurasi Database
-
-Edit file [`config/db.php`](file:///d:/PROJEKTBM/digilibTBM/config/db.php):
+Edit file `config/db.php`:
 
 ```php
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=db_digilib_tbm',
-    'username' => 'root',  // Sesuaikan dengan username MySQL Anda
-    'password' => '',      // Sesuaikan dengan password MySQL Anda
+    'username' => 'root',  // sesuaikan
+    'password' => '',      // sesuaikan
     'charset' => 'utf8mb4',
 ];
 ```
 
 #### 5. Jalankan Server
 
-Gunakan batch file yang sudah disediakan:
-
 ```bash
 .\START_SERVER.bat
 ```
 
-Atau jalankan manual dengan PHP built-in server:
+atau manual:
 
 ```bash
 php yii serve --port=8080
@@ -120,774 +103,290 @@ php yii serve --port=8080
 
 #### 6. Akses Aplikasi
 
-Buka browser dan akses:
-
 ```
 http://localhost:8080
 ```
 
 ### Akun Default
 
-Setelah setup database, sistem akan membuat akun admin default:
+**Admin**
+- Email: admin@digilib.com
+- Password: 12345
 
-| Field | Value |
-|-------|-------|
-| **Email** | admin@digilib.com |
-| **Password** | 12345 |
-| **Role** | Admin |
-
-> ⚠️ **PERINGATAN**: Segera ubah password default setelah login pertama kali!
+*Note: Ganti password setelah login pertama kali!*
 
 ---
 
-## 🎯 Fitur-Fitur Sistem
+## Panduan Admin
 
-### Struktur Database
+### Login Admin
 
-Sistem menggunakan 8 tabel utama:
-
-```mermaid
-erDiagram
-    USER ||--o| ANGGOTA : "has one"
-    ANGGOTA ||--o{ PEMINJAMAN : "makes"
-    PEMINJAMAN ||--|{ ITEM_PEMINJAMAN : "contains"
-    PEMINJAMAN ||--o| DENDA : "may have"
-    BUKU ||--o{ ITEM_PEMINJAMAN : "included in"
-    KATEGORI ||--|{ BUKU : "categorizes"
-    RAK ||--o{ BUKU : "stores"
-    
-    USER {
-        int userid PK
-        string nama
-        string email UK
-        string passwordHash
-        string status
-        string tipe_user
-    }
-    
-    ANGGOTA {
-        int anggotaID PK,FK
-    }
-    
-    BUKU {
-        int bukuID PK
-        int kategoriID FK
-        int rakID FK
-        string judul
-        int stok
-        string thumbnail
-    }
-    
-    KATEGORI {
-        int kategoriID PK
-        string nama
-    }
-    
-    RAK {
-        int id PK
-        string nama
-        string lokasi
-    }
-    
-    PEMINJAMAN {
-        int id PK
-        int anggotaID FK
-        datetime tanggalPinjam
-        datetime tanggalKembali
-        datetime tglJatuhTempo
-        string status
-    }
-    
-    ITEM_PEMINJAMAN {
-        int id PK
-        int peminjamanID FK
-        int bukuID FK
-    }
-    
-    DENDA {
-        int id PK
-        int peminjamanID FK
-        decimal jumlah
-        int hariTerlambat
-        datetime tanggalDibuat
-    }
-```
-
-### Kategori Buku Default
-
-Sistem dilengkapi dengan 4 kategori default:
-
-1. **Fiksi** - Novel, cerita pendek, dll
-2. **Non-Fiksi** - Biografi, sejarah, dll
-3. **Pendidikan** - Buku pelajaran, tutorial, dll
-4. **Teknologi** - Programming, IT, dll
-
-### Status Peminjaman
-
-| Status | Deskripsi |
-|--------|-----------|
-| `menunggu_verifikasi_admin` | Peminjaman baru menunggu approval admin |
-| `dipinjam` | Buku sedang dipinjam (sudah diverifikasi) |
-| `dikembalikan` | Buku sudah dikembalikan |
-
----
-
-## 👨‍💼 Panduan Pengguna Admin
-
-### Login sebagai Admin
-
-1. Buka halaman utama aplikasi
-2. Klik tombol **"Login"**
-3. Masukkan kredensial admin:
-   - Email: `admin@digilib.com`
-   - Password: `12345`
-4. Klik **"Login"**
-5. Anda akan diarahkan ke **Dashboard Admin**
+1. Buka halaman utama
+2. Klik "Login"
+3. Masukkan email dan password admin
+4. Akan masuk ke Dashboard Admin
 
 ### Dashboard Admin
 
-Dashboard admin menampilkan:
+Dashboard menampilkan:
+- Total Buku
+- Total Anggota
+- Peminjaman Aktif
+- Buku Terlambat
+- Denda Belum Dibayar
 
-- 📊 **Statistik Real-time**:
-  - Total Buku
-  - Total Anggota
-  - Peminjaman Aktif
-  - Buku Terlambat
-  - Denda Belum Dibayar
-  
-- 📈 **Grafik Visualisasi**:
-  - Distribusi kategori buku
-  - Trend peminjaman bulanan
-  - Top 5 buku terpopuler
-  
-- 🔔 **Notifikasi**:
-  - Peminjaman menunggu verifikasi
-  - Buku akan jatuh tempo
-  - Stok buku menipis
+### Kelola Buku
 
-### Manajemen Buku
+**Lihat Daftar Buku**
+- Klik menu "Buku"
+- Ada tabel dengan semua data buku
 
-#### Lihat Daftar Buku
+**Tambah Buku**
+1. Klik "Tambah Buku"
+2. Isi form (Judul, Kategori, Rak, Stok, Thumbnail)
+3. Klik "Simpan"
 
-1. Dari dashboard, klik menu **"Buku"**
-2. Anda akan melihat tabel berisi semua buku dengan kolom:
-   - Judul Buku
-   - Kategori
-   - Rak
-   - Stok
-   - Thumbnail
-   - Aksi
+**Edit Buku**
+1. Klik icon pensil di buku yang mau diedit
+2. Ubah data
+3. Klik "Update"
 
-#### Tambah Buku Baru
+**Hapus Buku**
+- Klik icon tempat sampah
+- Konfirmasi
+- *Note: Buku yang sedang dipinjam ga bisa dihapus*
 
-1. Di halaman Buku, klik tombol **"+ Tambah Buku"**
-2. Isi form dengan data buku:
-   - **Judul**: Nama buku
-   - **Kategori**: Pilih dari dropdown (Fiksi, Non-Fiksi, dll)
-   - **Rak**: Pilih lokasi penyimpanan
-   - **Stok**: Jumlah eksemplar yang tersedia
-   - **Thumbnail**: (Opsional) URL gambar cover buku
-3. Klik **"Simpan"**
-4. Sistem akan menampilkan pesan sukses
+**Cari Buku**
+- Ketik judul/penulis/ISBN di search box
 
-#### Edit Buku
+### Kelola Anggota
 
-1. Di daftar buku, klik ikon **pensil (✏️)** pada buku yang ingin diedit
-2. Ubah data yang diperlukan
-3. Klik **"Update"**
+**Lihat Anggota**
+- Klik menu "Anggota"
+- Tampil daftar semua member
 
-#### Hapus Buku
+**Tambah Anggota**
+1. Klik "Tambah Anggota"
+2. Isi nama, email, password, status
+3. Klik "Daftar"
 
-1. Di daftar buku, klik ikon **tempat sampah (🗑️)**
-2. Konfirmasi penghapusan
-3. Buku akan dihapus dari database
+**Edit/Hapus**
+- Sama kayak kelola buku, pake icon pensil/tempat sampah
 
-> ⚠️ **Perhatian**: Buku yang sedang dipinjam tidak bisa dihapus!
+### Kelola Peminjaman
 
-#### Cari Buku
+Menu Peminjaman ada 4 tab:
 
-Fitur pencarian mendukung:
-- **Judul** buku
-- **Penulis** (jika kolom tersedia)
-- **ISBN** (jika kolom tersedia)
+1. **Menunggu Verifikasi** - peminjaman baru yang belum disetujui
+2. **Aktif** - peminjaman yang sedang berjalan
+3. **Terlambat** - peminjaman lewat jatuh tempo
+4. **Riwayat** - semua peminjaman yang udah selesai
 
-Cukup ketik kata kunci di search box dan tekan Enter.
+**Verifikasi Peminjaman**
+1. Buka tab "Menunggu Verifikasi"
+2. Review detail peminjaman
+3. Klik "Verifikasi & Aktifkan"
+4. Status jadi `dipinjam` dan stok berkurang
 
-### Manajemen Anggota
+**Kembalikan Buku (Manual)**
+1. Cari di tab "Aktif"
+2. Klik "Kembalikan Buku"
+3. Sistem auto hitung denda kalau telat
+4. Stok buku nambah lagi
 
-#### Lihat Daftar Anggota
+### Kelola Kategori
 
-1. Dari dashboard, klik menu **"Anggota"**
-2. Tabel akan menampilkan:
-   - Nama Anggota
-   - Email
-   - Status (Aktif/Nonaktif)
-   - Jumlah Peminjaman Aktif
-   - Aksi
+1. Klik menu "Kategori"
+2. Klik "Tambah Kategori"
+3. Masukkan nama kategori
+4. Simpan
 
-#### Tambah Anggota Baru
+*Note: Kategori yang ada bukunya ga bisa dihapus*
 
-1. Klik tombol **"+ Tambah Anggota"**
-2. Isi form registrasi:
-   - **Nama Lengkap**
-   - **Email** (harus unik)
-   - **Password**
-   - **Status**: Aktif/Nonaktif
-3. Klik **"Daftar"**
+### Kelola Rak
 
-#### Edit Data Anggota
-
-1. Klik ikon **pensil (✏️)** pada anggota yang ingin diedit
-2. Update informasi yang diperlukan
-3. Klik **"Update"**
-
-#### Hapus Anggota
-
-1. Klik ikon **tempat sampah (🗑️)**
-2. Konfirmasi penghapusan
-3. Anggota dan semua data terkait akan dihapus
-
-> ⚠️ **Cascade Delete**: Menghapus anggota akan menghapus semua riwayat peminjaman mereka!
-
-#### Lihat Detail Anggota
-
-1. Klik nama anggota atau ikon **mata (👁️)**
-2. Halaman detail menampilkan:
-   - Informasi pribadi
-   - Riwayat peminjaman
-   - Denda yang belum dibayar
-
-### Manajemen Peminjaman
-
-#### Lihat Daftar Peminjaman
-
-Menu **"Peminjaman"** menampilkan 4 tab:
-
-1. **Tab Menunggu Verifikasi** 🔔
-   - Peminjaman baru yang belum disetujui
-   - Badge notifikasi menunjukkan jumlah
-   
-2. **Tab Aktif** 📖
-   - Peminjaman yang sedang berjalan
-   - Status: `dipinjam`
-   
-3. **Tab Terlambat** ⚠️
-   - Peminjaman yang melewati jatuh tempo
-   - Otomatis menghitung denda
-   
-4. **Tab Riwayat** 📚
-   - Semua peminjaman yang sudah dikembalikan
-
-#### Verifikasi Peminjaman Baru
-
-Ketika anggota meminjam buku online:
-
-1. Buka tab **"Menunggu Verifikasi"**
-2. Review detail peminjaman:
-   - Nama peminjam
-   - Buku yang dipinjam
-   - Tanggal pengajuan
-3. Klik tombol **"Verifikasi & Aktifkan"**
-4. Sistem akan:
-   - Mengubah status menjadi `dipinjam`
-   - Mengurangi stok buku
-   - Mengirim notifikasi ke anggota
-
-> 💡 **Tips**: Verifikasi peminjaman setelah anggota mengambil buku secara fisik di perpustakaan.
-
-#### Pengembalian Buku (Manual oleh Admin)
-
-1. Cari peminjaman di tab **"Aktif"**
-2. Klik tombol **"Kembalikan Buku"**
-3. Sistem akan:
-   - Mengisi tanggal pengembalian
-   - Menghitung denda (jika terlambat)
-   - Menambah stok buku kembali
-4. Jika ada denda, catat pembayaran tunai
-
-#### Lihat Detail Peminjaman
-
-Klik pada record peminjaman untuk melihat:
-- Informasi anggota
-- Daftar buku yang dipinjam
-- Timeline:
-  - Tanggal pinjam
-  - Tanggal jatuh tempo
-  - Tanggal kembali (jika sudah)
-- Denda (jika ada)
-
-### Manajemen Kategori
-
-#### Tambah Kategori Baru
-
-1. Klik menu **"Kategori"**
-2. Klik **"+ Tambah Kategori"**
-3. Masukkan nama kategori (contoh: "Komik", "Majalah")
-4. Klik **"Simpan"**
-
-#### Edit/Hapus Kategori
-
-Sama seperti manajemen buku, gunakan ikon edit dan delete.
-
-> ⚠️ **Perhatian**: Kategori yang memiliki buku tidak bisa dihapus!
-
-### Manajemen Rak
-
-#### Tambah Rak Baru
-
-1. Klik menu **"Rak"**
-2. Klik **"+ Tambah Rak"**
-3. Isi form:
-   - **Nama Rak**: Contoh "Rak A", "Rak B"
-   - **Lokasi**: Contoh "Lantai 1", "Ruang Baca"
-4. Klik **"Simpan"**
-
-#### Edit/Hapus Rak
-
-Gunakan ikon edit dan delete seperti fitur lainnya.
-
-### Laporan & Statistik
-
-Dashboard admin menyediakan:
-
-#### Grafik Distribusi Buku per Kategori
-
-```mermaid
-pie title Distribusi Buku per Kategori
-    "Fiksi" : 35
-    "Non-Fiksi" : 25
-    "Pendidikan" : 30
-    "Teknologi" : 10
-```
-
-#### Grafik Peminjaman Bulanan
-
-Visualisasi trend peminjaman dalam 12 bulan terakhir.
-
-#### Top 5 Buku Terpopuler
-
-Ranking buku berdasarkan jumlah peminjaman.
+1. Klik menu "Rak"
+2. Klik "Tambah Rak"
+3. Isi nama rak dan lokasi
+4. Simpan
 
 ---
 
-## 👤 Panduan Pengguna Member/Anggota
+## Panduan Anggota
 
-### Registrasi Akun
+### Registrasi
 
-1. Di halaman utama, klik **"Daftar"** atau **"Register"**
-2. Isi form registrasi:
-   - **Nama Lengkap**
-   - **Email** (gunakan email valid)
-   - **Password** (minimal 6 karakter)
-   - **Konfirmasi Password**
-3. Klik **"Daftar"**
-4. Sistem akan membuat akun dengan role **"anggota"**
-5. Login dengan kredensial yang baru dibuat
-
-### Login sebagai Member
-
-1. Klik **"Login"**
-2. Masukkan email dan password
-3. Klik **"Login"**
-4. Anda akan diarahkan ke **Dashboard Anggota**
+1. Klik "Daftar" di halaman utama
+2. Isi form:
+   - Nama Lengkap
+   - Email
+   - Password (min 6 karakter)
+   - Konfirmasi Password
+3. Klik "Daftar"
+4. Login dengan akun baru
 
 ### Dashboard Anggota
 
-Dashboard anggota menampilkan:
+Dashboard member menampilkan:
+- Buku yang sedang dipinjam
+- Buku yang mau jatuh tempo
+- Total denda (kalau ada)
+- Katalog Digital
+- Riwayat Peminjaman
 
-- 📊 **Ringkasan Peminjaman**:
-  - Jumlah buku yang sedang dipinjam
-  - Buku yang akan jatuh tempo
-  - Total denda yang belum dibayar
-  
-- 📚 **Katalog Digital**:
-  - Grid buku dengan thumbnail
-  - Tombol aksi cepat "Pinjam Sekarang"
-  
-- 📖 **Riwayat Peminjaman Saya**:
-  - Peminjaman aktif
-  - Riwayat peminjaman sebelumnya
+### Browse Katalog
 
-### Browse Katalog Buku
+1. Scroll ke "Katalog Digital" atau klik menu "Katalog"
+2. Buku ditampilkan dalam grid dengan thumbnail
+3. Bisa search berdasarkan judul/penulis/ISBN
+4. Bisa filter berdasarkan kategori
 
-#### Cara Melihat Katalog
+### Pinjam Buku
 
-1. Dari dashboard, scroll ke bagian **"Katalog Digital"**
-2. Atau klik menu **"Katalog"** di navigation bar
-3. Buku ditampilkan dalam bentuk grid card dengan:
-   - Thumbnail/cover buku
-   - Judul
-   - Kategori
-   - Stok tersedia
-   - Tombol **"Pinjam"**
+1. Cari buku yang diinginkan di katalog
+2. Klik "Pinjam Sekarang"
+3. Sistem buat peminjaman dengan status `menunggu_verifikasi_admin`
+4. Datang ke perpus untuk ambil buku
+5. Admin akan verifikasi
+6. Status jadi `dipinjam`
 
-#### Cari Buku
-
-Gunakan search box untuk mencari berdasarkan:
-- Judul buku
-- Penulis
-- ISBN
-
-#### Filter Buku
-
-Filter buku berdasarkan:
-- **Kategori**: Fiksi, Non-Fiksi, Pendidikan, Teknologi
-- **Ketersediaan**: Hanya tampilkan buku yang tersedia
-
-### Meminjam Buku Online
-
-#### Cara Pinjam Buku
-
-1. Browse katalog dan temukan buku yang diinginkan
-2. Klik tombol **"Pinjam Sekarang"** pada card buku
-3. Sistem akan:
-   - Memverifikasi stok tersedia
-   - Membuat record peminjaman baru
-   - Status: `menunggu_verifikasi_admin`
-4. Anda akan melihat pesan konfirmasi
-
-> 📌 **Catatan**: Peminjaman Anda menunggu verifikasi admin. Ambil buku di perpustakaan setelah mendapat konfirmasi.
-
-#### Apa yang Terjadi Setelah Pinjam?
-
-1. Peminjaman Anda masuk antrian verifikasi admin
-2. Admin akan memverifikasi saat Anda datang mengambil buku
-3. Setelah diverifikasi:
-   - Status berubah menjadi `dipinjam`
-   - Tanggal jatuh tempo dihitung (biasanya 7-14 hari)
-   - Stok buku berkurang
-
-#### Ketentuan Peminjaman
-
-- ⏰ **Durasi Peminjaman**: 14 hari (bisa berbeda per perpustakaan)
-- 📚 **Maksimal Pinjam**: Cek kebijakan perpustakaan
-- 💰 **Denda Keterlambatan**: Rp 1.000/hari per buku (bisa berbeda)
+**Ketentuan:**
+- Durasi: 14 hari
+- Denda: Rp 1.000/hari kalau telat
 
 ### Lihat Peminjaman Aktif
 
-1. Klik menu **"Peminjaman Saya"**
-2. Tab **"Sedang Dipinjam"** menampilkan:
-   - Buku yang sedang Anda pinjam
+1. Klik "Peminjaman Saya"
+2. Tab "Sedang Dipinjam" menampilkan:
+   - Buku yang dipinjam
    - Tanggal pinjam
    - Tanggal jatuh tempo
-   - **Countdown** hari tersisa
-   - Tombol **"Kembalikan"**
+   - Countdown hari tersisa
 
-### Pengembalian Buku Mandiri
+### Kembalikan Buku
 
-Fitur ini memungkinkan Anda menandai pengembalian secara online.
+1. Di tab "Sedang Dipinjam"
+2. Klik "Kembalikan Buku"
+3. Sistem otomatis:
+   - Isi tanggal kembali
+   - Hitung denda kalau telat
+   - Status jadi `dikembalikan`
+4. Kembalikan buku fisik ke perpus dan bayar denda (kalau ada)
 
-#### Cara Mengembalikan Buku
-
-1. Di halaman **"Peminjaman Saya"**, tab **"Sedang Dipinjam"**
-2. Klik tombol **"Kembalikan Buku"** pada buku yang ingin dikembalikan
-3. Sistem akan:
-   - Mengisi tanggal pengembalian dengan hari ini
-   - Menghitung denda jika terlambat
-   - Mengubah status menjadi `dikembalikan`
-4. Jika ada denda, sistem menampilkan peringatan:
-
-> ⚠️ **Denda harus dibayar tunai di tempat!**  
-> Jumlah Denda: Rp 5.000 (5 hari terlambat × Rp 1.000)
-
-5. Kembalikan buku fisik ke perpustakaan dan bayar denda (jika ada)
-
-#### Perhitungan Denda
-
-Denda dihitung otomatis dengan rumus:
-
+**Perhitungan Denda:**
 ```
-Denda = (Tanggal Kembali - Tanggal Jatuh Tempo) × Tarif per Hari
+Denda = (Tanggal Kembali - Tanggal Jatuh Tempo) × Rp 1.000
 ```
 
 Contoh:
-- Jatuh Tempo: 1 Januari 2026
-- Tanggal Kembali: 6 Januari 2026
-- Keterlambatan: 5 hari
-- Tarif: Rp 1.000/hari
-- **Total Denda: Rp 5.000**
-
-### Lihat Riwayat Peminjaman
-
-1. Klik menu **"Peminjaman Saya"**
-2. Tab **"Riwayat"** menampilkan semua peminjaman yang sudah selesai:
-   - Buku yang dipinjam
-   - Tanggal pinjam & kembali
-   - Denda (jika ada)
-   - Status pembayaran
+- Jatuh Tempo: 1 Jan 2026
+- Kembali: 6 Jan 2026
+- Telat: 5 hari
+- Denda: 5 × Rp 1.000 = Rp 5.000
 
 ### Update Profil
 
-1. Klik menu **"Profil"** atau ikon user di navbar
-2. Anda dapat mengubah:
-   - Nama
-   - Email (pastikan unik)
-   - Password
-3. Klik **"Update Profil"**
-4. Sistem akan menyimpan perubahan
+1. Klik menu "Profil"
+2. Bisa ubah nama, email, password
+3. Klik "Update Profil"
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### Error: "Connection Refused" saat Akses Aplikasi
+### Server tidak bisa diakses
 
-**Penyebab**: Server tidak berjalan
-
-**Solusi**:
-1. Pastikan server sudah dijalankan:
-   ```bash
-   .\START_SERVER.bat
-   ```
-   atau
-   ```bash
-   php yii serve --port=8080
-   ```
-2. Cek apakah port 8080 sudah digunakan aplikasi lain
-3. Coba port lain: `php yii serve --port=8081`
-
-### Error: "Database Connection Failed"
-
-**Penyebab**: Konfigurasi database salah atau MySQL tidak berjalan
+**Masalah**: Connection Refused
 
 **Solusi**:
-1. Cek service MySQL/XAMPP sudah running
-2. Verifikasi kredensial di [`config/db.php`](file:///d:/PROJEKTBM/digilibTBM/config/db.php)
-3. Pastikan database `db_digilib_tbm` sudah dibuat
-4. Test koneksi dengan command:
-   ```bash
-   php yii migrate
-   ```
+```bash
+.\START_SERVER.bat
+```
+atau cek apakah port 8080 sudah dipakai aplikasi lain
 
-### Error: "Duplicate Entry for key 'email'"
+### Database Connection Failed
 
-**Penyebab**: Email sudah terdaftar di database
+**Masalah**: Koneksi database gagal
 
 **Solusi**:
-1. Gunakan email yang berbeda untuk registrasi
-2. Atau hapus user lama dari database (admin only):
-   ```sql
-   DELETE FROM user WHERE email = 'email@example.com';
-   ```
+1. Cek MySQL/XAMPP sudah running
+2. Cek kredensial di `config/db.php`
+3. Pastikan database `db_digilib_tbm` sudah ada
 
-### Error: "Forbidden - You are not allowed to access this page"
+### Email sudah terdaftar
 
-**Penyebab**: Anda tidak punya akses ke halaman tersebut
+**Masalah**: Duplicate entry for key 'email'
+
+**Solusi**: Pakai email yang lain atau hapus user lama
+
+### Forbidden Access
+
+**Masalah**: Not allowed to access this page
 
 **Solusi**:
-1. Pastikan Anda login dengan role yang sesuai
-2. Fitur tertentu hanya untuk admin
-3. Logout dan login ulang jika masih error
+- Pastikan login dengan role yang sesuai
+- Fitur tertentu hanya untuk admin
+- Coba logout dan login ulang
 
-### Buku Tidak Bisa Dipinjam
+### Buku ga bisa dipinjam
 
-**Kemungkinan Penyebab**:
-1. Stok habis (0)
-2. Anda sudah punya peminjaman aktif yang belum dikembalikan
+**Kemungkinan**:
+1. Stok habis
+2. Udah punya peminjaman aktif yang belum dikembalikan
 3. Akun belum diverifikasi admin
-
-**Solusi**:
-1. Cek stok buku di katalog
-2. Kembalikan buku yang sudah dipinjam terlebih dahulu
-3. Hubungi admin untuk verifikasi akun
-
-### Denda Tidak Muncul
-
-**Penyebab**: Perhitungan denda dilakukan saat pengembalian
-
-**Solusi**:
-- Denda otomatis dihitung saat Anda klik tombol **"Kembalikan Buku"**
-- Jika tidak muncul, hubungi admin
 
 ### Lupa Password
 
-**Solusi untuk Anggota**:
-1. Hubungi admin perpustakaan
-2. Admin dapat mereset password Anda dari halaman manajemen anggota
+**Untuk Anggota**: Hubungi admin
 
-**Solusi untuk Admin**:
-1. Akses database langsung via phpMyAdmin
-2. Update password di tabel `user`:
-   ```sql
-   UPDATE user 
-   SET passwordHash = '12345' 
-   WHERE email = 'admin@digilib.com';
-   ```
-3. Login dengan password `12345`
-4. Segera ganti password setelah login
-
-### Thumbnail Buku Tidak Tampil
-
-**Penyebab**: URL thumbnail tidak valid atau file tidak ada
-
-**Solusi**:
-1. Pastikan URL thumbnail valid (format: `http://...` atau `https://...`)
-2. Atau upload gambar ke folder `web/uploads/` dan gunakan path relatif
-3. Format yang didukung: JPG, PNG, GIF
+**Untuk Admin**: 
+1. Akses database via phpMyAdmin
+2. Update password di tabel `user`
+3. Login dengan password baru
 
 ---
 
-## ❓ FAQ (Frequently Asked Questions)
+## FAQ
 
-### 1. Berapa lama durasi peminjaman buku?
+**Q: Berapa lama durasi peminjaman?**
+A: Default 14 hari kalender
 
-**Jawab**: Default durasi peminjaman adalah **14 hari** kalender. Tanggal jatuh tempo dihitung otomatis saat admin memverifikasi peminjaman.
+**Q: Bisa perpanjang peminjaman?**
+A: Hubungi admin untuk perpanjangan manual
 
-### 2. Apakah bisa memperpanjang peminjaman?
+**Q: Cara bayar denda?**
+A: Tunai di perpustakaan saat kembalikan buku
 
-**Jawab**: Saat ini sistem belum support perpanjangan otomatis. Hubungi admin perpustakaan untuk request perpanjangan manual.
+**Q: Bisa pinjam lebih dari 1 buku?**
+A: Bisa, pinjam satu per satu lewat katalog
 
-### 3. Bagaimana cara membayar denda?
+**Q: Kenapa peminjaman masih "Menunggu Verifikasi"?**
+A: Harus datang ke perpus untuk ambil buku, nanti admin verifikasi
 
-**Jawab**: Denda dibayarkan **tunai di perpustakaan** saat mengembalikan buku fisik. Sistem hanya menghitung dan mencatat jumlah denda.
+**Q: Cara backup database?**
+A: Via phpMyAdmin → Export → pilih format SQL
 
-### 4. Apakah bisa meminjam lebih dari 1 buku sekaligus?
+**Q: Cara restore database?**
+A: Via phpMyAdmin → Import → pilih file backup SQL
 
-**Jawab**: Ya. Pinjam buku satu per satu melalui katalog. Semua peminjaman akan tercatat terpisah.
+---
 
-### 5. Kenapa peminjaman saya masih "Menunggu Verifikasi"?
+## Struktur Folder
 
-**Jawab**: Peminjaman online perlu verifikasi admin. Datang ke perpustakaan untuk mengambil buku, lalu admin akan memverifikasi peminjaman Anda.
-
-### 6. Bisa cancel peminjaman yang sudah di-request?
-
-**Jawab**: Hubungi admin untuk membatalkan peminjaman yang masih dalam status "Menunggu Verifikasi".
-
-### 7. Apakah data peminjaman tercatat selamanya?
-
-**Jawab**: Ya. Semua riwayat peminjaman tersimpan di database untuk keperluan tracking dan laporan.
-
-### 8. Bagaimana cara menambahkan kolom Penulis dan ISBN?
-
-**Jawab**: Gunakan script yang sudah disediakan:
-
-```bash
-php add_penulis_isbn_columns.php
+```
+digilibTBM/
+├── assets/         # Asset management
+├── commands/       # Console commands
+├── config/         # Konfigurasi aplikasi
+├── controllers/    # Controllers
+├── models/         # Models
+├── runtime/        # File runtime (logs, cache)
+├── scripts/        # Utility scripts
+├── views/          # View templates
+├── web/            # Public files
+└── migrations/     # Database migrations
 ```
 
-Script ini akan menambahkan kolom `penulis` dan `isbn` ke tabel `buku`.
-
-### 9. Apakah sistem support multi-bahasa?
-
-**Jawab**: Saat ini sistem hanya tersedia dalam Bahasa Indonesia. Untuk menambahkan bahasa lain, perlu modifikasi manual di view files.
-
-### 10. Bagaimana cara backup database?
-
-**Jawab**:
-
-**Via phpMyAdmin**:
-1. Buka phpMyAdmin
-2. Pilih database `db_digilib_tbm`
-3. Klik tab "Export"
-4. Pilih format SQL
-5. Klik "Go"
-
-**Via Command Line**:
-```bash
-mysqldump -u root -p db_digilib_tbm > backup_digilib.sql
-```
-
-### 11. Bagaimana cara restore database?
-
-**Jawab**:
-
-**Via phpMyAdmin**:
-1. Buat database baru `db_digilib_tbm`
-2. Klik tab "Import"
-3. Pilih file backup SQL
-4. Klik "Go"
-
-**Via Command Line**:
-```bash
-mysql -u root -p db_digilib_tbm < backup_digilib.sql
-```
-
-### 12. Apa yang terjadi jika anggota dihapus?
-
-**Jawab**: Menghapus anggota akan **menghapus semua data terkait** (cascade delete):
-- Semua record peminjaman
-- Semua denda
-- Akun user
-
-> ⚠️ **Perhatian**: Backup database sebelum menghapus anggota!
-
-### 13. Bagaimana cara mengubah tarif denda?
-
-**Jawab**: Edit file [`controllers/AnggotaController.php`](file:///d:/PROJEKTBM/digilibTBM/controllers/AnggotaController.php) di method `actionPengembalianMandiri`, cari baris:
-
-```php
-$tarifDendaPerHari = 1000; // Ubah nilai ini
-```
-
-### 14. Apakah sistem ini gratis?
-
-**Jawab**: Ya, sistem ini berbasis framework Yii2 yang open-source. Lisensi ada di file [`LICENSE.md`](file:///d:/PROJEKTBM/digilibTBM/LICENSE.md).
-
-### 15. Bagaimana cara menghubungi support?
-
-**Jawab**: Untuk dukungan teknis atau pertanyaan, hubungi administrator sistem Anda atau buat issue di repository proyek (jika menggunakan GitHub).
-
 ---
 
-## 📞 Kontak & Support
-
-### Informasi Kontak
-
-- **Email Support**: [Isi dengan email support Anda]
-- **Jam Operasional**: [Isi dengan jam operasional]
-- **Alamat Perpustakaan**: [Isi dengan alamat]
-
-### Sumber Daya Tambahan
-
-- 📖 [README.md](file:///d:/PROJEKTBM/digilibTBM/README.md) - Dokumentasi teknis
-- 🗄️ [DATABASE_SETUP.md](file:///d:/PROJEKTBM/digilibTBM/DATABASE_SETUP.md) - Panduan setup database
-- 📷 [THUMBNAIL_UPDATE_DOCS.md](file:///d:/PROJEKTBM/digilibTBM/THUMBNAIL_UPDATE_DOCS.md) - Cara update thumbnail buku
-
-### Framework Documentation
-
-- [Yii2 Framework Guide](https://www.yiiframework.com/doc/guide/2.0/en)
-- [Yii2 API Reference](https://www.yiiframework.com/doc/api/2.0)
-
----
-
-## 📝 Changelog
-
-### Versi 1.0 (Januari 2026)
-
-**Fitur Baru**:
-- ✅ Sistem peminjaman online
-- ✅ Pengembalian mandiri
-- ✅ Perhitungan denda otomatis
-- ✅ Dashboard interaktif untuk admin dan member
-- ✅ Katalog digital dengan thumbnail
-- ✅ Pencarian buku (judul, penulis, ISBN)
-- ✅ Multi-role user system (Admin & Member)
-- ✅ Manajemen kategori dan rak
-
-**Perbaikan**:
-- 🔧 Fix error duplicate email pada registrasi
-- 🔧 Fix login error "password atau email salah"
-- 🔧 Perbaikan UI/UX dashboard
-
-**Database**:
-- 🗄️ Tambah tabel `item_peminjaman`
-- 🗄️ Tambah kolom `thumbnail` pada tabel `buku`
-- 🗄️ Support kolom `penulis` dan `isbn` (via script)
-
----
-
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah [BSD 3-Clause License](file:///d:/PROJEKTBM/digilibTBM/LICENSE.md).
-
----
-
-## 🎉 Selamat Menggunakan digilibTBM!
-
-Terima kasih telah menggunakan sistem **digilibTBM**. Semoga manual book ini membantu Anda dalam menggunakan sistem perpustakaan digital ini dengan maksimal.
-
-> **"Membaca adalah jendela dunia. Mari wujudkan perpustakaan digital yang modern dan efisien!"** 📚✨
-
----
-
-**Dibuat dengan ❤️ menggunakan Yii2 Framework**
+**Catatan**: Dokumentasi ini dibuat untuk memudahkan penggunaan sistem digilibTBM. Kalau ada yang kurang jelas, silakan hubungi developer.

@@ -1,122 +1,133 @@
-# Panduan Membuat Ulang Database
+# Setup Database - digilibTBM
 
-Database `db_digilib_tbm` telah terhapus. Gunakan salah satu metode di bawah ini untuk membuat ulang database.
+Dokumentasi cara setup database untuk aplikasi digilibTBM.
 
-## Metode 1: Menggunakan Script PHP (Direkomendasikan)
+## Cara 1: Pakai phpMyAdmin (Paling Mudah)
 
-Cara termudah adalah menggunakan script PHP yang sudah disediakan:
+1. Buka XAMPP/WAMP, start MySQL
+2. Buka phpMyAdmin (biasanya di `http://localhost/phpmyadmin`)
+3. Klik "New" untuk buat database baru
+4. Nama database: `db_digilib_tbm`
+5. Collation: `utf8mb4_general_ci`
+6. Klik "Create"
+7. Pilih database yang baru dibuat
+8. Klik tab "SQL"
+9. Buka file `SQL_UNTUK_PHPMYADMIN.sql` di folder project
+10. Copy semua isi file
+11. Paste di box SQL
+12. Klik "Go"
+13. Done!
 
-```bash
-php create_database.php
-```
+## Cara 2: Pakai Script Otomatis (Recommended)
 
-Script ini akan:
-- Membuat database `db_digilib_tbm` jika belum ada
-- Membuat semua tabel yang diperlukan
-- Memasukkan data sample (kategori, rak, dan user admin)
-
-**User Admin Default:**
-- Email: `admin@digilib.com`
-- Password: `12345`
-
-## Metode 2: Menggunakan SQL File
-
-Jika Anda lebih suka menggunakan SQL langsung:
-
-1. Buka phpMyAdmin atau tool database lainnya
-2. Login ke MySQL dengan user `root` (tanpa password sesuai konfigurasi)
-3. Buka tab "SQL"
-4. Copy dan paste isi file `migrations/create_database.sql`
-5. Klik "Go" atau "Execute"
-
-Atau menggunakan command line MySQL:
+Lebih gampang pakai script yang udah disediain:
 
 ```bash
-mysql -u root < migrations/create_database.sql
+.\RUN_CREATE_DATABASE.bat
 ```
 
-## Struktur Database
+Script ini akan otomatis:
+- Cek koneksi database
+- Buat database `db_digilib_tbm`
+- Buat semua tabel
+- Insert data default (admin, kategori)
 
-Database ini terdiri dari 8 tabel:
+## Cara 3: Manual via Command Line
 
-1. **user** - Data akun pengguna
-   - userid (PK)
-   - nama
-   - email (unique)
-   - passwordHash
-   - status
-   - tipe_user
+Kalau mau manual lewat terminal:
 
+```bash
+# Masuk ke MySQL
+mysql -u root -p
+
+# Buat database
+CREATE DATABASE db_digilib_tbm;
+
+# Gunakan database
+USE db_digilib_tbm;
+
+# Import file SQL
+SOURCE d:/PROJEKTBM/digilibTBM/migrations/create_database.sql;
+```
+
+## Struktur Tabel
+
+Database punya 8 tabel:
+
+1. **user** - Data user (admin & anggota)
 2. **anggota** - Data anggota perpustakaan
-   - anggotaID (PK, FK ke user.userid)
-
-3. **kategori** - Kategori buku
-   - kategoriID (PK)
-   - nama
-
-4. **rak** - Rak penyimpanan buku
-   - id (PK)
-   - nama
-   - lokasi
-
-5. **buku** - Data buku
-   - bukuID (PK)
-   - kategoriID (FK)
-   - rakID (FK)
-   - judul
-   - stok
-
+3. **buku** - Data koleksi buku
+4. **kategori** - Kategori buku (Fiksi, Non-Fiksi, dll)
+5. **rak** - Data rak penyimpanan
 6. **peminjaman** - Transaksi peminjaman
-   - id (PK)
-   - anggotaID (FK)
-   - tanggalPinjam
-   - tanggalKembali
-   - tglJatuhTempo
-   - status
-
 7. **item_peminjaman** - Detail buku yang dipinjam
-   - id (PK)
-   - peminjamanID (FK)
-   - bukuID (FK)
+8. **denda** - Data denda keterlambatan
 
-8. **denda** - Data denda
-   - id (PK)
-   - peminjamanID (FK)
-   - jumlah
-   - hariTerlambat
-   - tanggalDibuat
+## Data Default
+
+Setelah setup, database terisi:
+
+**User Admin:**
+- Email: admin@digilib.com
+- Password: 12345
+- Tipe: admin
+
+**Kategori:**
+1. Fiksi
+2. Non-Fiksi
+3. Pendidikan
+4. Teknologi
+
+## Troubleshooting
+
+### Error: Access denied for user 'root'
+
+Berarti password MySQL salah. Cek password di config atau reset password MySQL.
+
+### Error: Database already exists
+
+Database udah ada. Bisa:
+1. Drop database lama: `DROP DATABASE db_digilib_tbm;`
+2. Atau pakai database yang ada
+
+### Error: PHP not found
+
+Path PHP belum di-set. Lihat `SETUP_PHP_PATH.md` untuk cara setting.
 
 ## Konfigurasi Database
 
-Pastikan konfigurasi di `config/db.php` sudah benar:
+Setelah setup, jangan lupa edit `config/db.php`:
 
 ```php
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=db_digilib_tbm',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8',
+    'username' => 'root',     // sesuaikan
+    'password' => '',         // sesuaikan
+    'charset' => 'utf8mb4',
 ];
 ```
 
-## Troubleshooting
+## Backup Database
 
-### Error: Access denied
-- Pastikan MySQL service sudah berjalan
-- Pastikan username dan password di `config/db.php` benar
+Untuk backup database:
 
-### Error: Database already exists
-- Tidak masalah, script akan membuat tabel jika belum ada
-- Jika ingin menghapus database lama, hapus manual dulu di phpMyAdmin
+**Via phpMyAdmin:**
+1. Pilih database `db_digilib_tbm`
+2. Klik tab "Export"
+3. Pilih format SQL
+4. Klik "Go"
+5. File SQL akan ke-download
 
-### Error: Foreign key constraint fails
-- Pastikan tabel dibuat dalam urutan yang benar
-- Script PHP sudah mengatur urutan pembuatan tabel dengan benar
+**Via Command Line:**
+```bash
+mysqldump -u root -p db_digilib_tbm > backup.sql
+```
 
-## Setelah Database Dibuat
+## Restore Database
 
-1. Pastikan aplikasi dapat mengakses database
-2. Login dengan user admin default (email: `admin@digilib.com`, password: `12345`)
-3. Mulai menambahkan data sesuai kebutuhan
+Kalau mau restore dari backup:
 
+```bash
+mysql -u root -p db_digilib_tbm < backup.sql
+```
